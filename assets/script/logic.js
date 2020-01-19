@@ -22,8 +22,8 @@ $(document).ready(function () {
     // train information is added to table from firebase
 
     //on click function that will send form input information to firebase
-
     $("#submit").on("click", function (event) {
+        //prevents page from refreshing when button is pushed
         event.preventDefault();
         database.ref().push({
             trainName: $(".train-name").val(),
@@ -32,7 +32,31 @@ $(document).ready(function () {
             frequency: $(".frequency").val()
         });
 
+    });
+database.ref().on("child_added", function(snapshot){
 
-    })
+var inputTrainName = snapshot.val().trainName;
+var inputDestination = snapshot.val().destination;
+var inputFrequency = snapshot.val().frequency;
+var inputFirstTrainTime = snapshot.val().firstTrainTime;
+var convertedTime = moment(inputFirstTrainTime, "HH:mm").subtract(1, "years");
+console.log(convertedTime);
+
+var currentTime = moment();
+
+var nextArrival = 0;
+var minutesAway = 0;
+
+var newRow = $("<tr>"). append(
+    $("<td>").text(inputTrainName),
+    $("<td>").text(inputDestination),
+    $("<td>").text(inputFrequency),
+    $("<td>").text(nextArrival),
+    $("<td>").text(minutesAway)
+);
+
+$("tbody").append(newRow);
+
+});
 
 });
