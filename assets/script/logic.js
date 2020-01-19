@@ -32,6 +32,11 @@ $(document).ready(function () {
             frequency: $(".frequency").val()
         });
 
+        $(".train-name").val("");
+        $(".destination").val("");
+        $(".first-time").val("");
+        $(".frequency").val("");
+
     });
 database.ref().on("child_added", function(snapshot){
 
@@ -39,20 +44,40 @@ var inputTrainName = snapshot.val().trainName;
 var inputDestination = snapshot.val().destination;
 var inputFrequency = snapshot.val().frequency;
 var inputFirstTrainTime = snapshot.val().firstTrainTime;
-var convertedTime = moment(inputFirstTrainTime, "HH:mm").subtract(1, "years");
-console.log(convertedTime);
 
+//convert time if to ensure it's in the correct format
+var convertedTime = moment(inputFirstTrainTime, "HH:mm").subtract(1, "years");
+
+//current time
 var currentTime = moment();
 
-var nextArrival = 0;
-var minutesAway = 0;
+//difference between current time and converted time
+var diffTime = moment().diff(moment(convertedTime), "minutes");
+console.log("Difference in time: " + diffTime);
+
+//time apart (remainder)
+
+var tRemainder = diffTime % inputFrequency;
+console.log("remaining time: " + tRemainder);
+
+//minutes unti train
+var tMinutesTillTrain = inputFrequency - tRemainder;
+// console.log ("Minutes til Train: " + tMinutesTillTrain);
+
+var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+// console.log("Arrival time: " + moment(nextTrain).format ("hh:mm"));
+
+nextTrain = nextTrain.format("h:mm a");
+
+// var nextArrival = 0;
+// var minutesAway = 0;
 
 var newRow = $("<tr>"). append(
     $("<td>").text(inputTrainName),
     $("<td>").text(inputDestination),
     $("<td>").text(inputFrequency),
-    $("<td>").text(nextArrival),
-    $("<td>").text(minutesAway)
+    $("<td>").text(nextTrain),
+    $("<td>").text(tMinutesTillTrain)
 );
 
 $("tbody").append(newRow);
