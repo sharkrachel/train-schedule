@@ -1,0 +1,26 @@
+.table-form {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 5px;
+    margin-bottom: 0px;
+}
+
+.container {
+    max-width: 860px;
+    margin-left: 80px;
+}
+
+.table-title {
+    text-align: center;
+
+}
+
+.title {
+    text-align: center;
+
+}
+
+.description {
+    text-align: center;
+    font-size: 22px;
+}
