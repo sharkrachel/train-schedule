@@ -54,6 +54,7 @@ $(document).ready(function () {
         //current time
         var currentTime = moment();
 
+
         //difference between current time and converted time
         var diffTime = moment().diff(moment(convertedTime), "minutes");
         // console.log("Difference in time: " + diffTime);
